@@ -29,8 +29,28 @@ tools {
                 """
             }
         }
+        stage('Authenticate and Push Docker Image to AWS ECR')
+        { 
+            steps  
+            {
+               sh """
+                docker build -t 872718194191.dkr.ecr.ap-south-1.amazonaws.com/maven-web-application:${BUILD_NUMBER} .
+                """
+            }                                                          
+        }
+        
+         stage('Authenticate and Push Docker Image to AWS ECR')
+        {
+            steps()
+            {
+                sh  'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 872718194191.dkr.ecr.ap-south-1.amazonaws.com'
+                sh 'docker push 872718194191.dkr.ecr.ap-south-1.amazonaws.com/maven-web-application:${BUILD_NUMBER}'
+                    
+            }
+        }
     }
-}
+}    
+
 
  
 
